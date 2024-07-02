@@ -65,7 +65,7 @@ class RegistrazioneInterventoDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
-    String idRiga = row.getCells()[0].value.toString();
+    // String idRiga = row.getCells()[0].value.toString();
 
     ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
       foregroundColor: const Color.fromARGB(255, 255, 0, 0),
@@ -131,38 +131,9 @@ class RegistrazioneInterventoDataSource extends DataGridSource {
     );
   }
 
-  String _getOperatorName(BuildContext context, WidgetRef ref) {
-    final userName =
-        ref.read(sharedPreferencesProvider).asData!.value.getString("user");
-    return operatorNames[userName] ?? '';
+String _getOperatorName(BuildContext context, WidgetRef ref) {
+    final prefs = ref.read(sharedPreferencesProvider).asData?.value;
+    final operatorName = prefs?.getString("operatorName");
+    return operatorName ?? 'Unknown';
   }
-
-    // void _showDetailsPage(Intervento intervento, String idRiga, BuildContext context) {
-    //   String righeDescrizione = intervento.righe.isNotEmpty ? intervento.righe[0].descrizione : '';
-    //   String? righeStatusEvasione = intervento.righe.isNotEmpty ? intervento.righe[0].statusEvasione : '';
-    //   String? operatore = intervento.righe.isNotEmpty ? intervento.righe[0].operatore : '';
-    //   Navigator.of(context).push(
-    //     MaterialPageRoute(
-    //       builder: (context) => DetailsPage(
-    //         idTestata: intervento.idTestata,
-    //         clienteCodice: intervento.cliente.codice,
-    //         numDoc: intervento.numDoc,
-    //         descrizioneCliente: intervento.cliente.descrizione,
-    //         dataDoc: intervento.dataDoc,
-    //         indirizzoSpedizione: intervento.cliente.indirizzo,
-    //         telefono1: intervento.cliente.telefono1,
-    //         telefono2: intervento.cliente.telefono2,
-    //         email: intervento.cliente.email,
-    //         note: intervento.note,
-    //         statusEvasione: righeStatusEvasione,
-    //         matricola: intervento.matricola,
-    //         rifMatricolaCliente: intervento.rifMatricolaCliente,
-    //         telaio: intervento.telaio,
-    //         contMatricola: intervento.contMatricola,
-    //         descrizioneIntervento: righeDescrizione,
-    //         autoreModifica: operatore, ultimaModifica: DateTime.now(),
-    //       ),
-    //     ),
-    //   );
-    // }
 }

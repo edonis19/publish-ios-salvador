@@ -376,7 +376,7 @@ void updateInterventoModifica({String? operatoreModifica, DateTime? ultimaModifi
   int index = riga.riga!;
   int newIndex = index - 1;
 
-  if (index! >= 0 && newIndex < state.righe.length) {
+  if (index >= 0 && newIndex < state.righe.length) {
     state.righe[index].note = nuovaNota;
     state.righe[index].descrizione = nuovaNota;
     

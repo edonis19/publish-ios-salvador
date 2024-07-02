@@ -8,11 +8,7 @@ import 'package:salvador_task_management/src/config/providers.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salvador_task_management/src/models/articolo_model.dart' as articolo;
-import 'package:salvador_task_management/src/models/cliente_model.dart' as cliente;
-import 'package:salvador_task_management/src/models/intervento_model.dart' as intervento;
 import 'package:salvador_task_management/src/protobuf/user_access_configuration/Contract.pb.dart';
-import 'package:salvador_task_management/src/repository/clienti_api_repository.dart';
-import 'package:salvador_task_management/src/repository/interventi_api_repository.dart';
 import 'package:salvador_task_management/src/repository/item_api_repository.dart';
 import 'package:salvador_task_management/src/repository/user_menu_repository.dart';
 

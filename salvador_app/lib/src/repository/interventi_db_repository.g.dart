@@ -24,7 +24,7 @@ final interventiDbOpRepositoryProvider = AutoDisposeAsyncNotifierProvider<
 
 typedef _$InterventiDbOpRepository = AutoDisposeAsyncNotifier<List<Intervento>>;
 String _$interventiStateRepositoryHash() =>
-    r'4bab422d7e522b61858e00272878827513c0b7c1';
+    r'8a2c8b1d949d5ef5c25bf6bef247f3aa34efbbf3';
 
 /// See also [InterventiStateRepository].
 @ProviderFor(InterventiStateRepository)

@@ -33474,8 +33474,8 @@ extension InterventoArticoloArchivedQueryObject on QueryBuilder<
 _$InterventoArchivedImpl _$$InterventoArchivedImplFromJson(
         Map<String, dynamic> json) =>
     _$InterventoArchivedImpl(
-      id: json['id'] as int?,
-      idTestata: json['idTestata'] as int,
+      id: (json['id'] as num?)?.toInt(),
+      idTestata: (json['idTestata'] as num).toInt(),
       barcode: json['barcode'] as String?,
       numDoc: json['numDoc'] as String?,
       dataDoc: DateTime.parse(json['dataDoc'] as String),
@@ -33505,8 +33505,8 @@ _$InterventoArchivedImpl _$$InterventoArchivedImplFromJson(
       totPesoLordo: (json['totPesoLordo'] as num?)?.toDouble(),
       totPesoNetto: (json['totPesoNetto'] as num?)?.toDouble(),
       totVolume: (json['totVolume'] as num?)?.toDouble(),
-      numColli: json['numColli'] as int?,
-      numPallet: json['numPallet'] as int?,
+      numColli: (json['numColli'] as num?)?.toInt(),
+      numPallet: (json['numPallet'] as num?)?.toInt(),
       stPrezziDdt: json['stPrezziDdt'] as String?,
       telefono1: json['telefono1'] as String?,
       telefono2: json['telefono2'] as String?,
@@ -33564,7 +33564,7 @@ Map<String, dynamic> _$$InterventoArchivedImplToJson(
 _$TipoDocArchivedImpl _$$TipoDocArchivedImplFromJson(
         Map<String, dynamic> json) =>
     _$TipoDocArchivedImpl(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       codice: json['codice'] as String?,
       descrizione: json['descrizione'] as String?,
     );
@@ -33580,7 +33580,7 @@ Map<String, dynamic> _$$TipoDocArchivedImplToJson(
 _$InterventoClienteArchivedImpl _$$InterventoClienteArchivedImplFromJson(
         Map<String, dynamic> json) =>
     _$InterventoClienteArchivedImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       codice: json['codice'] as String?,
       descrizione: json['descrizione'] as String?,
       partitaIva: json['partitaIva'] as String?,
@@ -33651,11 +33651,11 @@ Map<String, dynamic> _$$InterventoClienteArchivedImplToJson(
 
 _$RigaArchivedImpl _$$RigaArchivedImplFromJson(Map<String, dynamic> json) =>
     _$RigaArchivedImpl(
-      id: json['id'] as int?,
-      idTestata: json['idTestata'] as int?,
-      idRiga: json['idRiga'] as int?,
+      id: (json['id'] as num?)?.toInt(),
+      idTestata: (json['idTestata'] as num?)?.toInt(),
+      idRiga: (json['idRiga'] as num?)?.toInt(),
       numOrdine: json['numOrdine'] as String?,
-      riga: json['riga'] as int?,
+      riga: (json['riga'] as num?)?.toInt(),
       descrizione: json['descrizione'] as String?,
       barcode: json['barcode'] as String?,
       statusEvasione: json['statusEvasione'] as String?,
@@ -33722,7 +33722,7 @@ _$RigaArchivedImpl _$$RigaArchivedImplFromJson(Map<String, dynamic> json) =>
       error: json['error'] as String?,
       matricole: json['matricole'] as String?,
       lotti: json['lotti'] as String?,
-      docId: json['docId'] as int?,
+      docId: (json['docId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$RigaArchivedImplToJson(_$RigaArchivedImpl instance) =>
@@ -33795,8 +33795,8 @@ Map<String, dynamic> _$$RigaArchivedImplToJson(_$RigaArchivedImpl instance) =>
 _$InterventoArticoloArchivedImpl _$$InterventoArticoloArchivedImplFromJson(
         Map<String, dynamic> json) =>
     _$InterventoArticoloArchivedImpl(
-      id: json['id'] as int?,
-      idListino: json['idListino'] as int?,
+      id: (json['id'] as num?)?.toInt(),
+      idListino: (json['idListino'] as num?)?.toInt(),
       codice: json['codice'] as String?,
       descrizione: json['descrizione'] as String?,
       barcode: json['barcode'] as String?,

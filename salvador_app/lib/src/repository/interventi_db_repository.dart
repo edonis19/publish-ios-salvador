@@ -146,18 +146,28 @@ class InterventiStateRepository extends _$InterventiStateRepository {
       var interventiDb = ref.read(interventiDbOpRepositoryProvider.notifier);
       await interventiDb.deleteInterventoById(intervento);
 
-      ref.invalidateSelf(); // Invalidate to refresh data
+      updateStateAfterDelete(intervento);
+
+      ref.invalidateSelf();
+      print('Intervento eliminato con successo: ${intervento.idTestata}');
     } catch (e) {
       print('Error deleting Intervento: $e');
     }
   }
+
+  void updateStateAfterDelete(Intervento intervento) {
+    var interventi = state.asData!.value;
+    interventi.removeWhere((i) => i.idTestata == intervento.idTestata);
+    state = AsyncData(interventi);
+  }
+
 
     Future<void> removeAllInterventi(List<Intervento> intervento) async {
     try {
       var interventiDb = ref.read(interventiDbOpRepositoryProvider.notifier);
       await interventiDb.removeAllInterventi(intervento);
 
-      ref.invalidateSelf(); // Invalidate to refresh data
+      ref.invalidateSelf();
     } catch (e) {
       print('Error deleting Intervento: $e');
     }

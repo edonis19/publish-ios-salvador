@@ -33291,8 +33291,8 @@ extension InterventoArticoloQueryObject
 
 _$InterventoImpl _$$InterventoImplFromJson(Map<String, dynamic> json) =>
     _$InterventoImpl(
-      id: json['id'] as int?,
-      idTestata: json['idTestata'] as int,
+      id: (json['id'] as num?)?.toInt(),
+      idTestata: (json['idTestata'] as num).toInt(),
       barcode: json['barcode'] as String?,
       numDoc: json['numDoc'] as String?,
       dataDoc: DateTime.parse(json['dataDoc'] as String),
@@ -33321,8 +33321,8 @@ _$InterventoImpl _$$InterventoImplFromJson(Map<String, dynamic> json) =>
       totPesoLordo: (json['totPesoLordo'] as num?)?.toDouble(),
       totPesoNetto: (json['totPesoNetto'] as num?)?.toDouble(),
       totVolume: (json['totVolume'] as num?)?.toDouble(),
-      numColli: json['numColli'] as int?,
-      numPallet: json['numPallet'] as int?,
+      numColli: (json['numColli'] as num?)?.toInt(),
+      numPallet: (json['numPallet'] as num?)?.toInt(),
       stPrezziDdt: json['stPrezziDdt'] as String?,
       telefono1: json['telefono1'] as String?,
       telefono2: json['telefono2'] as String?,
@@ -33334,7 +33334,7 @@ _$InterventoImpl _$$InterventoImplFromJson(Map<String, dynamic> json) =>
       ultimaModifica: json['ultimaModifica'] == null
           ? null
           : DateTime.parse(json['ultimaModifica'] as String),
-      docId: json['docId'] as int?,
+      docId: (json['docId'] as num?)?.toInt(),
       righe: (json['righe'] as List<dynamic>?)
               ?.map((e) => Riga.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -33386,7 +33386,7 @@ Map<String, dynamic> _$$InterventoImplToJson(_$InterventoImpl instance) =>
 
 _$TipoDocImpl _$$TipoDocImplFromJson(Map<String, dynamic> json) =>
     _$TipoDocImpl(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       codice: json['codice'] as String?,
       descrizione: json['descrizione'] as String?,
     );
@@ -33401,7 +33401,7 @@ Map<String, dynamic> _$$TipoDocImplToJson(_$TipoDocImpl instance) =>
 _$InterventoClienteImpl _$$InterventoClienteImplFromJson(
         Map<String, dynamic> json) =>
     _$InterventoClienteImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       codice: json['codice'] as String?,
       descrizione: json['descrizione'] as String?,
       partitaIva: json['partitaIva'] as String?,
@@ -33471,11 +33471,11 @@ Map<String, dynamic> _$$InterventoClienteImplToJson(
     };
 
 _$RigaImpl _$$RigaImplFromJson(Map<String, dynamic> json) => _$RigaImpl(
-      id: json['id'] as int?,
-      idTestata: json['idTestata'] as int?,
-      idRiga: json['idRiga'] as int?,
+      id: (json['id'] as num?)?.toInt(),
+      idTestata: (json['idTestata'] as num?)?.toInt(),
+      idRiga: (json['idRiga'] as num?)?.toInt(),
       numOrdine: json['numOrdine'] as String?,
-      riga: json['riga'] as int?,
+      riga: (json['riga'] as num?)?.toInt(),
       descrizione: json['descrizione'] as String?,
       barcode: json['barcode'] as String?,
       statusEvasione: json['statusEvasione'] as String?,
@@ -33542,7 +33542,7 @@ _$RigaImpl _$$RigaImplFromJson(Map<String, dynamic> json) => _$RigaImpl(
       error: json['error'] as String?,
       matricole: json['matricole'] as String?,
       lotti: json['lotti'] as String?,
-      docId: json['docId'] as int?,
+      docId: (json['docId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$RigaImplToJson(_$RigaImpl instance) =>
@@ -33615,8 +33615,8 @@ Map<String, dynamic> _$$RigaImplToJson(_$RigaImpl instance) =>
 _$InterventoArticoloImpl _$$InterventoArticoloImplFromJson(
         Map<String, dynamic> json) =>
     _$InterventoArticoloImpl(
-      id: json['id'] as int?,
-      idListino: json['idListino'] as int?,
+      id: (json['id'] as num?)?.toInt(),
+      idListino: (json['idListino'] as num?)?.toInt(),
       codice: json['codice'] as String?,
       descrizione: json['descrizione'] as String?,
       barcode: json['barcode'] as String?,

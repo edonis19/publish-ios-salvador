@@ -131,8 +131,8 @@ class RegistrazioneInterventoPage extends ConsumerWidget {
                   Consumer(builder: ((context, ref, child) {
                     final intervento = ref.watch(interventoApertoStateProvider);
 
-                    final prefs =
-                        ref.read(sharedPreferencesProvider).asData!.value;
+                    // final prefs =
+                    //     ref.read(sharedPreferencesProvider).asData!.value;
                     List<Riga> righeList = intervento.righe.toList();
 
                     return Expanded(
@@ -275,40 +275,43 @@ class RegistrazioneInterventoPage extends ConsumerWidget {
                                     )
                                   : null,
                               onTap: () {
-  final idRiga = riga.riga;
-  final idRigaModify = riga.idRiga;
-  if (idRigaModify == null) {
-    final String? codiceArticolo = riga.articolo?.codice;
-    double qtaArt = riga.qta ?? 0.0;
+                                // final idRiga = riga.riga;
+                                final idRigaModify = riga.idRiga;
+                                if (idRigaModify == null) {
+                                  final String? codiceArticolo =
+                                      riga.articolo?.codice;
+                                  double qtaArt = riga.qta ?? 0.0;
 
-    if ([
-      'SMANCAR',
-      'SMANCLI',
-      'SMANEST',
-      'SMANEST+40%',
-      'SMANESTFES',
-      'SMANFES',
-      'SMANINT',
-      'SMANSTD'
-    ].contains(codiceArticolo ?? '')) {
-      modifyDurataDialog(context, riga, nuovaQuantita, ref);
-    } else {
-      if (qtaArt == 0.0) {
-        _showModifyNotaDialog(context, ref, riga, nuovaNota);
-      } else if (qtaArt >= 1.0) {
-        modifyDettagliDialog(
-            context,
-            articolo,
-            intervento,
-            ref,
-            riga,
-            nuovaQuantita,
-            qtaArt,
-            notes ?? '');
-      }
-    }
-  }
-},
+                                  if ([
+                                    'SMANCAR',
+                                    'SMANCLI',
+                                    'SMANEST',
+                                    'SMANEST+40%',
+                                    'SMANESTFES',
+                                    'SMANFES',
+                                    'SMANINT',
+                                    'SMANSTD'
+                                  ].contains(codiceArticolo ?? '')) {
+                                    modifyDurataDialog(
+                                        context, riga, nuovaQuantita, ref);
+                                  } else {
+                                    if (qtaArt == 0.0) {
+                                      _showModifyNotaDialog(
+                                          context, ref, riga, nuovaNota);
+                                    } else if (qtaArt >= 1.0) {
+                                      modifyDettagliDialog(
+                                          context,
+                                          articolo,
+                                          intervento,
+                                          ref,
+                                          riga,
+                                          nuovaQuantita,
+                                          qtaArt,
+                                          notes ?? '');
+                                    }
+                                  }
+                                }
+                              },
                             );
                           },
                         ),
@@ -399,36 +402,36 @@ class RegistrazioneInterventoPage extends ConsumerWidget {
                             final idRigaModify = riga.idRiga;
 
                             if (idRigaModify == null) {
-                              final String columnName =
-                                  details.column.columnName;
-                               double qtaArt = riga.qta ?? 0.0;
+                              double qtaArt = riga.qta ?? 0.0;
 
-    if ([
-      'SMANCAR',
-      'SMANCLI',
-      'SMANEST',
-      'SMANEST+40%',
-      'SMANESTFES',
-      'SMANFES',
-      'SMANINT',
-      'SMANSTD'
-    ].contains(riga.articolo?.codice ?? '')) {
-      modifyDurataDialog(context, riga, nuovaQuantita, ref);
-    } else {
-      if (qtaArt == 0.0) {
-        _showModifyNotaDialog(context, ref, riga, nuovaNota);
-      } else if (qtaArt >= 1.0) {
-        modifyDettagliDialog(
-            context,
-            articolo,
-            intervento,
-            ref,
-            riga,
-            nuovaQuantita,
-            qtaArt,
-            notes ?? '');
-      }
-    }
+                              if ([
+                                'SMANCAR',
+                                'SMANCLI',
+                                'SMANEST',
+                                'SMANEST+40%',
+                                'SMANESTFES',
+                                'SMANFES',
+                                'SMANINT',
+                                'SMANSTD'
+                              ].contains(riga.articolo?.codice ?? '')) {
+                                modifyDurataDialog(
+                                    context, riga, nuovaQuantita, ref);
+                              } else {
+                                if (qtaArt == 0.0) {
+                                  _showModifyNotaDialog(
+                                      context, ref, riga, nuovaNota);
+                                } else if (qtaArt >= 1.0) {
+                                  modifyDettagliDialog(
+                                      context,
+                                      articolo,
+                                      intervento,
+                                      ref,
+                                      riga,
+                                      nuovaQuantita,
+                                      qtaArt,
+                                      notes ?? '');
+                                }
+                              }
                             }
                           }
                         },
@@ -436,354 +439,405 @@ class RegistrazioneInterventoPage extends ConsumerWidget {
                     );
                   }))
                 ],
-SizedBox(
-  height: 60,
-  child: Row(
-    children: [
-      Expanded(
-        child: TextButton.icon(
-          onPressed: () async {
-            bool hasNullIdRiga = intervento.righe.any((riga) => riga.idRiga == null);
-
-            if (!hasNullIdRiga) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Aggiungi una riga per chiudere la giornata'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-              return;
-            }
-
-            bool confirm = await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                SizedBox(
+                  height: 60,
+                  child: Row(
                     children: [
-                      Text(
-                        'Conferma',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  content: const Text(
-                    'Sei sicuro di voler chiudere la giornata?',
-                    textAlign: TextAlign.center,
-                  ),
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                side: const BorderSide(color: Colors.grey),
-                              ),
-                              textStyle: const TextStyle(color: Colors.black),
+                      Expanded(
+                        child: TextButton.icon(
+                          onPressed: () async {
+                            bool hasNullIdRiga = intervento.righe
+                                .any((riga) => riga.idRiga == null);
+
+                            if (!hasNullIdRiga) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Aggiungi una riga per chiudere la giornata'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+
+                            bool confirm = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Conferma',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  content: const Text(
+                                    'Sei sicuro di voler chiudere la giornata?',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  actions: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.grey[300],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                side: const BorderSide(
+                                                    color: Colors.grey),
+                                              ),
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            child: const Text('No',
+                                                style: TextStyle(
+                                                    color: Colors.black)),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.grey[300],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                side: const BorderSide(
+                                                    color: Colors.grey),
+                                              ),
+                                              textStyle: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            child: const Text('Si',
+                                                style: TextStyle(
+                                                    color: Colors.black)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            if (confirm == true) {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              );
+
+                              try {
+                                List<RigaInvio> righe = [];
+
+                                for (var riga in intervento.righe) {
+                                  RigaInvio nuovaRiga;
+
+                                  if (riga.articolo?.codice == 'SMANCAR' ||
+                                      riga.articolo?.codice == 'SMANCLI' ||
+                                      riga.articolo?.codice == 'SMANEST' ||
+                                      riga.articolo?.codice == 'SMANEST+40%' ||
+                                      riga.articolo?.codice == 'SMANESTFES' ||
+                                      riga.articolo?.codice == 'SMANFES' ||
+                                      riga.articolo?.codice == 'SMANINT' ||
+                                      riga.articolo?.codice == 'SMANSTD') {
+                                    nuovaRiga = RigaInvio(
+                                      id: null,
+                                      idRiga: riga.idRiga,
+                                      riga: riga.riga,
+                                      descrizione: riga.descrizione,
+                                      articolo: InterventoArticoloInvio(
+                                        id: riga.articolo?.id,
+                                        codice: riga.articolo?.codice,
+                                        descrizione: riga.articolo?.descrizione,
+                                      ),
+                                      tipoRiga: null,
+                                      qta: riga.qta,
+                                      dtOraIni: riga.dtOraIni.toString(),
+                                      dtOraFin: riga.dtOraFin.toString(),
+                                      operatore: riga.operatore,
+                                      note: riga.note,
+                                      noteDaStampare: null,
+                                      matricola: riga.matricola,
+                                      dtOraIns: riga.dtOraIns.toString(),
+                                      info: null,
+                                      warning: null,
+                                      error: null,
+                                    );
+                                  } else {
+                                    nuovaRiga = RigaInvio(
+                                      id: null,
+                                      idRiga: riga.idRiga,
+                                      riga: riga.riga,
+                                      descrizione: riga.descrizione,
+                                      articolo: InterventoArticoloInvio(
+                                        id: riga.articolo?.id,
+                                        codice: riga.articolo?.codice,
+                                        descrizione: riga.articolo?.descrizione,
+                                      ),
+                                      tipoRiga: null,
+                                      qta: riga.qta,
+                                      dtOraIni: null,
+                                      dtOraFin: null,
+                                      operatore: riga.operatore,
+                                      note: riga.note,
+                                      noteDaStampare: null,
+                                      matricola: riga.matricola,
+                                      dtOraIns: riga.dtOraIns.toString(),
+                                      info: null,
+                                      warning: null,
+                                      error: null,
+                                    );
+                                  }
+
+                                  righe.add(nuovaRiga);
+                                }
+
+                                final result = await ref
+                                    .read(addRigheApiRepositoryProvider)
+                                    .updateRighe(
+                                      idTestata: intervento.idTestata,
+                                      numDoc: intervento.numDoc,
+                                      dataDoc: intervento.dataDoc.toString(),
+                                      note: intervento.note,
+                                      matricola: intervento.matricola,
+                                      telaio: intervento.telaio,
+                                      rifMatricolaCliente:
+                                          intervento.rifMatricolaCliente,
+                                      contMatricola: intervento.contMatricola,
+                                      righe: righe,
+                                      status: 'SOS',
+                                      idCliente: intervento.cliente?.id,
+                                      codiceCliente: intervento.cliente?.codice,
+                                      descrizioneCliente:
+                                          intervento.cliente?.descrizione,
+                                      idTipoDoc: intervento.tipoDoc?.id,
+                                      codiceTipoDoc: intervento.tipoDoc?.codice,
+                                      descrizioneTipoDoc:
+                                          intervento.tipoDoc?.descrizione,
+                                    );
+
+                                final resultMap =
+                                    result as Map<String, dynamic>;
+                                final resultValue =
+                                    resultMap['result'] as String;
+                                final errorList =
+                                    resultMap['errorList'] as List<dynamic>;
+
+                                if (resultValue == 'OK') {
+                                  final docId = resultMap['docId'] as int;
+
+                                  var ultimaModifica = DateTime.now();
+                                  var prefs = await ref
+                                      .read(sharedPreferencesProvider.future);
+                                  final operatore =
+                                      prefs.getString('user')?.toUpperCase();
+                                  var interventiDbProviderIntervento = ref.read(
+                                      interventoApertoStateProvider.notifier);
+                                  interventiDbProviderIntervento
+                                      .updateInterventoModifica(
+                                          operatoreModifica: operatore,
+                                          ultimaModifica: ultimaModifica);
+
+                                  var interventiDbProviderDocId = ref.read(
+                                      interventoApertoStateProvider.notifier);
+                                  interventiDbProviderDocId.updateDocId(
+                                      docId: docId);
+
+                                  var interventiDbProvider = ref.read(
+                                      interventiStateRepositoryProvider
+                                          .notifier);
+                                  await interventiDbProvider
+                                      .deleteInterventoById(intervento);
+
+                                  Navigator.of(context).pop();
+
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  );
+
+                                  var interventiErp = await ref.read(
+                                      interventiApiProvider.call().future);
+                                  var interventiDbNotifierErp = ref.read(
+                                      interventiStateRepositoryProvider
+                                          .notifier);
+                                  interventiDbNotifierErp
+                                      .updateInterventiCloseErp(interventiErp);
+
+                                  Navigator.of(context).pop();
+
+                                  chiudiGiornata = true;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Documento registrato con successo.'),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                } else {
+                                  Navigator.of(context).pop();
+
+                                  final errorMessage = errorList.isNotEmpty
+                                      ? errorList.first.toString()
+                                      : 'Errore sconosciuto';
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Errore: $errorMessage'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                Navigator.of(context).pop();
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('Si è verificato un errore: $e'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            textStyle: const TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
                             ),
-                            child: const Text('No', style: TextStyle(color: Colors.black)),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(true);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                side: const BorderSide(color: Colors.grey),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: const BorderSide(
+                                color: Colors.black,
+                                width: 1,
                               ),
-                              textStyle: const TextStyle(color: Colors.black),
                             ),
-                            child: const Text('Si', style: TextStyle(color: Colors.black)),
+                            minimumSize: const Size(double.infinity, 60),
                           ),
+                          icon: const Icon(Icons.close),
+                          label: const Text('Chiudi giornata'),
                         ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            );
-
-            if (confirm == true) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              );
-
-              try {
-                List<RigaInvio> righe = [];
-
-                for (var riga in intervento.righe) {
-                  RigaInvio nuovaRiga;
-
-                  if (riga.articolo?.codice == 'SMANCAR' ||
-                      riga.articolo?.codice == 'SMANCLI' ||
-                      riga.articolo?.codice == 'SMANEST' ||
-                      riga.articolo?.codice == 'SMANEST+40%' ||
-                      riga.articolo?.codice == 'SMANESTFES' ||
-                      riga.articolo?.codice == 'SMANFES' ||
-                      riga.articolo?.codice == 'SMANINT' ||
-                      riga.articolo?.codice == 'SMANSTD') {
-                    nuovaRiga = RigaInvio(
-                      id: null,
-                      idRiga: riga.idRiga,
-                      riga: riga.riga,
-                      descrizione: riga.descrizione,
-                      articolo: InterventoArticoloInvio(
-                        id: riga.articolo?.id,
-                        codice: riga.articolo?.codice,
-                        descrizione: riga.articolo?.descrizione,
                       ),
-                      tipoRiga: null,
-                      qta: riga.qta,
-                      dtOraIni: riga.dtOraIni.toString(),
-                      dtOraFin: riga.dtOraFin.toString(),
-                      operatore: riga.operatore,
-                      note: riga.note,
-                      noteDaStampare: null,
-                      matricola: riga.matricola,
-                      dtOraIns: riga.dtOraIns.toString(),
-                      info: null,
-                      warning: null,
-                      error: null,
-                    );
-                  } else {
-                    nuovaRiga = RigaInvio(
-                      id: null,
-                      idRiga: riga.idRiga,
-                      riga: riga.riga,
-                      descrizione: riga.descrizione,
-                      articolo: InterventoArticoloInvio(
-                        id: riga.articolo?.id,
-                        codice: riga.articolo?.codice,
-                        descrizione: riga.articolo?.descrizione,
-                      ),
-                      tipoRiga: null,
-                      qta: riga.qta,
-                      dtOraIni: null,
-                      dtOraFin: null,
-                      operatore: riga.operatore,
-                      note: riga.note,
-                      noteDaStampare: null,
-                      matricola: riga.matricola,
-                      dtOraIns: riga.dtOraIns.toString(),
-                      info: null,
-                      warning: null,
-                      error: null,
-                    );
-                  }
-
-                  righe.add(nuovaRiga);
-                }
-
-                final result = await ref
-                    .read(addRigheApiRepositoryProvider)
-                    .updateRighe(
-                      idTestata: intervento.idTestata,
-                      numDoc: intervento.numDoc,
-                      dataDoc: intervento.dataDoc.toString(),
-                      note: intervento.note,
-                      matricola: intervento.matricola,
-                      telaio: intervento.telaio,
-                      rifMatricolaCliente: intervento.rifMatricolaCliente,
-                      contMatricola: intervento.contMatricola,
-                      righe: righe,
-                      status: 'SOS',
-                      idCliente: intervento.cliente?.id,
-                      codiceCliente: intervento.cliente?.codice,
-                      descrizioneCliente: intervento.cliente?.descrizione,
-                      idTipoDoc: intervento.tipoDoc?.id,
-                      codiceTipoDoc: intervento.tipoDoc?.codice,
-                      descrizioneTipoDoc: intervento.tipoDoc?.descrizione,
-                    );
-
-                final resultMap = result as Map<String, dynamic>;
-                final resultValue = resultMap['result'] as String;
-                final errorList = resultMap['errorList'] as List<dynamic>;
-
-                if (resultValue == 'OK') {
-                  final docId = resultMap['docId'] as int;
-
-                  var ultimaModifica = DateTime.now();
-                  var prefs = await ref.read(sharedPreferencesProvider.future);
-                  final operatore = prefs.getString('user')?.toUpperCase();
-                  var interventiDbProviderIntervento = ref.read(
-                      interventoApertoStateProvider.notifier);
-                  interventiDbProviderIntervento.updateInterventoModifica(
-                      operatoreModifica: operatore,
-                      ultimaModifica: ultimaModifica);
-
-                  var interventiDbProviderDocId = ref.read(
-                      interventoApertoStateProvider.notifier);
-                  interventiDbProviderDocId.updateDocId(docId: docId);
-
-                  var interventiDbProvider = ref.read(
-                      interventiStateRepositoryProvider.notifier);
-                  await interventiDbProvider.deleteInterventoById(intervento);
-
-                  Navigator.of(context).pop();
-
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  );
-
-                  var interventiErp = await ref.read(interventiApiProvider.call().future);
-                  var interventiDbNotifierErp = ref.read(interventiStateRepositoryProvider.notifier);
-                  interventiDbNotifierErp.updateInterventiCloseErp(interventiErp);
-
-                  Navigator.of(context).pop();
-
-                  chiudiGiornata = true;
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Documento registrato con successo.'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                } else {
-                  Navigator.of(context).pop();
-
-                  final errorMessage = errorList.isNotEmpty ? errorList.first.toString() : 'Errore sconosciuto';
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Errore: $errorMessage'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              } catch (e) {
-                Navigator.of(context).pop();
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Si è verificato un errore: $e'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              }
-            }
-          },
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.black,
-            textStyle: const TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              side: const BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            minimumSize: const Size(double.infinity, 60),
-          ),
-          icon: const Icon(Icons.close),
-          label: const Text('Chiudi giornata'),
-        ),
-      ),
                       const SizedBox(width: 16),
-                    Expanded(
-        child: TextButton.icon(
-          onPressed: () async {
-            bool hasNullIdRiga = intervento.righe.any((riga) => riga.idRiga == null);
+                      Expanded(
+                        child: TextButton.icon(
+                          onPressed: () async {
+                            bool hasNullIdRiga = intervento.righe
+                                .any((riga) => riga.idRiga == null);
 
-            if (!hasNullIdRiga) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Aggiungi una riga per completare l\'intervento'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-              return;
-            }
+                            if (!hasNullIdRiga) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Aggiungi una riga per completare l\'intervento'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
 
-            bool confirm = await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Conferma',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  content: const Text(
-                    'Sei sicuro di voler chiudere la giornata?',
-                    textAlign: TextAlign.center,
-                  ),
-                  actions: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                side: const BorderSide(color: Colors.grey),
-                              ),
-                              textStyle: const TextStyle(color: Colors.black),
-                            ),
-                            child: const Text('No', style: TextStyle(color: Colors.black)),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(true);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                side: const BorderSide(color: Colors.grey),
-                              ),
-                              textStyle: const TextStyle(color: Colors.black),
-                            ),
-                            child: const Text('Si', style: TextStyle(color: Colors.black)),
-                          ),
-                        ),
+                            bool confirm = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Conferma',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  content: const Text(
+                                    'Sei sicuro di voler chiudere la giornata?',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  actions: <Widget>[
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(false);
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                foregroundColor:
+                                                    Colors.grey[300],
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  side: const BorderSide(
+                                                      color: Colors.grey),
+                                                ),
+                                                textStyle: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              child: const Text('No',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(true);
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                foregroundColor:
+                                                    Colors.grey[300],
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  side: const BorderSide(
+                                                      color: Colors.grey),
+                                                ),
+                                                textStyle: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              child: const Text('Si',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                            ),
+                                          ),
                                         ]),
                                   ],
                                 );
@@ -900,7 +954,7 @@ SizedBox(
                                 final errorList =
                                     resultMap['errorList'] as List<dynamic>;
 
-                                Navigator.of(context).pop(); 
+                                Navigator.of(context).pop();
 
                                 if (resultValue == 'OK') {
                                   final docId = resultMap['docId'] as int;
@@ -914,8 +968,7 @@ SizedBox(
                                       interventiStateRepositoryProvider
                                           .notifier);
                                   await interventiDbProvider
-                                      .deleteInterventoById(
-                                          intervento);
+                                      .deleteInterventoById(intervento);
 
                                   var ultimaModifica = DateTime.now();
                                   var prefs = await ref
@@ -1079,54 +1132,23 @@ SizedBox(
 
   bool chiudiGiornata = false;
 
- Future<void> _showAllegatiDialog(
-  BuildContext context,
-  List<PlatformFile> files,
-  String rifMatricolaCliente,
-  WidgetRef ref,
-  int idTestata,
-) async {
-  String? tipoAllegato;
-  String descrizioneAllegato = '';
-  Intervento? intervento;
+  Future<void> _showAllegatiDialog(
+    BuildContext context,
+    List<PlatformFile> files,
+    String rifMatricolaCliente,
+    WidgetRef ref,
+    int idTestata,
+  ) async {
+    // String? tipoAllegato;
+    String descrizioneAllegato = '';
+    Intervento? intervento;
 
-  var interventi = await ref.read(interventiStateRepositoryProvider.future);
+    var interventi = await ref.read(interventiStateRepositoryProvider.future);
 
-  intervento = interventi.firstWhereOrNull((intervento) => intervento.idTestata == idTestata);
+    intervento = interventi
+        .firstWhereOrNull((intervento) => intervento.idTestata == idTestata);
 
-  if (intervento == null) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.dangerous),
-              SizedBox(width: 2),
-              Text('Errore'),
-            ],
-          ),
-          content: const Text('Impossibile trovare l\'intervento'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-    return;
-  }
-
-  var riga;
-  var docId;
-
-  if (idTestata < 0) {
-    if (!chiudiGiornata) {
+    if (intervento == null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -1136,11 +1158,10 @@ SizedBox(
               children: [
                 Icon(Icons.dangerous),
                 SizedBox(width: 2),
-                Text('Attenzione'),
+                Text('Errore'),
               ],
             ),
-            content: const Text(
-                "Devi chiudere la giornata o completare l'intervento prima di poter aggiungere allegati"),
+            content: const Text('Impossibile trovare l\'intervento'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -1154,267 +1175,333 @@ SizedBox(
       );
       return;
     }
-    riga = intervento.righe.lastWhereOrNull((riga) => riga.idTestata == idTestata);
-    docId = riga?.docId;
-  } else {
-    docId = intervento.idTestata;
-  }
 
-  AllegatiManager.allegatiTemporanei.addAll(files);
+    var riga;
+    var docId;
 
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return AlertDialog(
-            title: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.attach_file),
-                SizedBox(width: 2),
-                Text('ALLEGATI'),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (AllegatiManager.allegatiTemporanei.isNotEmpty) ...[
-                  for (int i = 0; i < AllegatiManager.allegatiTemporanei.length; i++)
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ImageViewScreen(filePath: AllegatiManager.allegatiTemporanei[i].path!),
-                          ),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(child: Text(AllegatiManager.allegatiTemporanei[i].name)),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                AllegatiManager.allegatiTemporanei.removeAt(i);
-                              });
-                            },
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    ),
-                  const SizedBox(height: 10),
+    if (idTestata < 0) {
+      if (!chiudiGiornata) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.dangerous),
+                  SizedBox(width: 2),
+                  Text('Attenzione'),
                 ],
-                Align(
-                  alignment: Alignment.center,
-                  child: IconButton(
-                    onPressed: () async {
-                      final result = await showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return SimpleDialog(
-                            title: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Aggiungi Allegato',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+              ),
+              content: const Text(
+                  "Devi chiudere la giornata o completare l'intervento prima di poter aggiungere allegati"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
+      riga = intervento.righe
+          .lastWhereOrNull((riga) => riga.idTestata == idTestata);
+      docId = riga?.docId;
+    } else {
+      docId = intervento.idTestata;
+    }
+
+    AllegatiManager.allegatiTemporanei.addAll(files);
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.attach_file),
+                  SizedBox(width: 2),
+                  Text('ALLEGATI'),
+                ],
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (AllegatiManager.allegatiTemporanei.isNotEmpty) ...[
+                    for (int i = 0;
+                        i < AllegatiManager.allegatiTemporanei.length;
+                        i++)
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImageViewScreen(
+                                  filePath: AllegatiManager
+                                      .allegatiTemporanei[i].path!),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Text(AllegatiManager
+                                    .allegatiTemporanei[i].name)),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  AllegatiManager.allegatiTemporanei
+                                      .removeAt(i);
+                                });
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      ),
+                    const SizedBox(height: 10),
+                  ],
+                  Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () async {
+                        final result = await showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SimpleDialog(
+                              title: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Aggiungi Allegato',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              children: <Widget>[
+                                SimpleDialogOption(
+                                  onPressed: () async {
+                                    final imagePicker = ImagePicker();
+                                    final XFile? pickedImage =
+                                        await imagePicker.pickImage(
+                                      source: ImageSource.camera,
+                                    );
+                                    if (pickedImage != null) {
+                                      File newFile = File(pickedImage.path);
+                                      PlatformFile platformFile = PlatformFile(
+                                        name: pickedImage.path.split('/').last,
+                                        path: pickedImage.path,
+                                        size: await newFile.length(),
+                                      );
+                                      setState(() {
+                                        AllegatiManager.allegatiTemporanei
+                                            .add(platformFile);
+                                      });
+                                      Navigator.pop(context, 'ScattaFoto');
+                                    }
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.camera_alt),
+                                      SizedBox(width: 8.0),
+                                      Text('Scatta Foto',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontStyle: FontStyle.italic)),
+                                    ],
+                                  ),
+                                ),
+                                SimpleDialogOption(
+                                  onPressed: () async {
+                                    final result =
+                                        await FilePicker.platform.pickFiles(
+                                      allowMultiple: true,
+                                      type: FileType.custom,
+                                      allowedExtensions: [
+                                        'jpg',
+                                        'pdf',
+                                        'doc',
+                                        'docx'
+                                      ],
+                                    );
+
+                                    if (result != null) {
+                                      setState(() {
+                                        AllegatiManager.allegatiTemporanei
+                                            .addAll(result.files);
+                                      });
+                                    }
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.file_copy),
+                                      SizedBox(width: 8.0),
+                                      Text('Scegli file',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontStyle: FontStyle.italic)),
+                                    ],
                                   ),
                                 ),
                               ],
-                            ),
-                            children: <Widget>[
-                              SimpleDialogOption(
-                                onPressed: () async {
-                                  final imagePicker = ImagePicker();
-                                  final XFile? pickedImage = await imagePicker.pickImage(
-                                    source: ImageSource.camera,
-                                  );
-                                  if (pickedImage != null) {
-                                    File newFile = File(pickedImage.path);
-                                    PlatformFile platformFile = PlatformFile(
-                                      name: pickedImage.path.split('/').last,
-                                      path: pickedImage.path,
-                                      size: await newFile.length(),
-                                    );
-                                    setState(() {
-                                      AllegatiManager.allegatiTemporanei.add(platformFile);
-                                    });
-                                    Navigator.pop(context, 'ScattaFoto');
-                                  }
-                                },
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.camera_alt),
-                                    SizedBox(width: 8.0),
-                                    Text('Scatta Foto',
-                                        style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
-                                  ],
-                                ),
-                              ),
-                              SimpleDialogOption(
-                                onPressed: () async {
-                                  final result = await FilePicker.platform.pickFiles(
-                                    allowMultiple: true,
-                                    type: FileType.custom,
-                                    allowedExtensions: ['jpg', 'pdf', 'doc', 'docx'],
-                                  );
-
-                                  if (result != null) {
-                                    setState(() {
-                                      AllegatiManager.allegatiTemporanei.addAll(result.files);
-                                    });
-                                  }
-                                  Navigator.pop(context);
-                                },
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.file_copy),
-                                    SizedBox(width: 8.0),
-                                    Text('Scegli file',
-                                        style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                      if (result == 'ScattaFoto') {
-                      } else if (result == 'VisualizzaAllegati') {}
-                    },
-                    icon: const Icon(Icons.add),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Descrizione Allegato',
-                  ),
-                  maxLength: 500,
-                  maxLines: 5,
-                  onChanged: (value) {
-                    descrizioneAllegato = value;
-                  },
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.grey[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: const BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      child: const Text(
-                        'Annulla',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        for (var allegato in AllegatiManager.allegatiTemporanei) {
-                          File file = File(allegato.path!);
-                          List<int> fileBytes = await file.readAsBytes();
-                          String base64File = base64Encode(fileBytes);
-                          String extension = path.extension(allegato.name).toUpperCase().substring(1);
-
-                          String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-
-                          var ultimaModifica = DateTime.now();
-                          var prefs = await ref.read(sharedPreferencesProvider.future);
-                          final operatore = prefs.getString('user')?.toUpperCase();
-                          var interventiDbProvider = ref.read(interventoApertoStateProvider.notifier);
-                          interventiDbProvider.updateInterventoModifica(
-                              operatoreModifica: operatore, ultimaModifica: ultimaModifica);
-
-                          final result = await ref.read(invioAllegatoApiRepositoryProvider).sendAttachment(
-                                docId: docId,
-                                tipoAll: 'OR',
-                                nomeAllegato: allegato.name,
-                                descrizioneAllegato: descrizioneAllegato,
-                                tipoAllegato: extension,
-                                fileSize: allegato.size.toString(),
-                                created: formattedDate,
-                                base64File: base64File,
-                              );
-
-                          if (result != null) {
-                            final resultMap = result as Map<String, dynamic>;
-                            final resultValue = resultMap['result'] as String;
-
-                            if (resultValue == 'OK') {
-                              AllegatiManager.allegatiTemporanei.clear();
-                              Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Allegato inviato'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                            }
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Errore durante l\'invio dell\'allegato.'),
-                                backgroundColor: Colors.red,
-                              ),
                             );
-                          }
-                        }
-                        Navigator.of(context).pop();
+                          },
+                        );
+
+                        if (result == 'ScattaFoto') {
+                        } else if (result == 'VisualizzaAllegati') {}
                       },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.grey[300],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: const BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      child: const Text(
-                        'Invia',
-                        style: TextStyle(color: Colors.black),
-                      ),
+                      icon: const Icon(Icons.add),
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Descrizione Allegato',
+                    ),
+                    maxLength: 500,
+                    maxLines: 5,
+                    onChanged: (value) {
+                      descrizioneAllegato = value;
+                    },
                   ),
                 ],
               ),
-            ],
-          );
-        },
-      );
-    },
-  );
-}
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                        child: const Text(
+                          'Annulla',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          for (var allegato
+                              in AllegatiManager.allegatiTemporanei) {
+                            File file = File(allegato.path!);
+                            List<int> fileBytes = await file.readAsBytes();
+                            String base64File = base64Encode(fileBytes);
+                            String extension = path
+                                .extension(allegato.name)
+                                .toUpperCase()
+                                .substring(1);
 
-Future<void> _openFile(String path) async {
-  final url = Uri(path: 'file://$path');
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    throw 'Impossibile aprire il file';
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd HH:mm:ss')
+                                    .format(DateTime.now());
+
+                            var ultimaModifica = DateTime.now();
+                            var prefs = await ref
+                                .read(sharedPreferencesProvider.future);
+                            final operatore =
+                                prefs.getString('user')?.toUpperCase();
+                            var interventiDbProvider = ref
+                                .read(interventoApertoStateProvider.notifier);
+                            interventiDbProvider.updateInterventoModifica(
+                                operatoreModifica: operatore,
+                                ultimaModifica: ultimaModifica);
+
+                            final result = await ref
+                                .read(invioAllegatoApiRepositoryProvider)
+                                .sendAttachment(
+                                  docId: docId,
+                                  tipoAll: 'OR',
+                                  nomeAllegato: allegato.name,
+                                  descrizioneAllegato: descrizioneAllegato,
+                                  tipoAllegato: extension,
+                                  fileSize: allegato.size.toString(),
+                                  created: formattedDate,
+                                  base64File: base64File,
+                                );
+
+                            if (result != null) {
+                              final resultMap = result as Map<String, dynamic>;
+                              final resultValue = resultMap['result'] as String;
+
+                              if (resultValue == 'OK') {
+                                AllegatiManager.allegatiTemporanei.clear();
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Allegato inviato'),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Errore durante l\'invio dell\'allegato.'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                        child: const Text(
+                          'Invia',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
-}
 
+  Future<void> _openFile(String path) async {
+    final url = Uri(path: 'file://$path');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Impossibile aprire il file';
+    }
+  }
 
   void _showMainDialog(
       BuildContext context, WidgetRef ref, String rifMatricolaCliente) {
@@ -1723,8 +1810,8 @@ Future<void> _openFile(String path) async {
                                   ),
                                 ],
                               ),
-                              content:
-                                  const Text('Non esiste il modello nel gestionale'),
+                              content: const Text(
+                                  'Non esiste il modello nel gestionale'),
                               actions: [
                                 TextButton(
                                   child: const Text('OK'),
@@ -1883,8 +1970,8 @@ Future<void> _openFile(String path) async {
                                   ),
                                 ],
                               ),
-                              content:
-                                  const Text('Non esiste la targa nel gestionale'),
+                              content: const Text(
+                                  'Non esiste la targa nel gestionale'),
                               actions: [
                                 TextButton(
                                   child: const Text('OK'),
@@ -1926,225 +2013,228 @@ Future<void> _openFile(String path) async {
     );
   }
 
-void _showAggiungiArticoloDialog(
-    BuildContext context, WidgetRef ref, Intervento intervento) {
-  String searchQuery = '';
-  final TextEditingController searchController = TextEditingController();
+  void _showAggiungiArticoloDialog(
+      BuildContext context, WidgetRef ref, Intervento intervento) {
+    String searchQuery = '';
+    final TextEditingController searchController = TextEditingController();
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return AlertDialog(
-            title: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.construction),
-                SizedBox(width: 2),
-                Text('Articoli'),
-              ],
-            ),
-            content: SizedBox(
-              width: 400,
-              height: 400,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: searchController,
-                          autofocus: true,
-                          onChanged: (value) {
-                            setState(() {
-                              searchQuery = value;
-                            });
-                            ref
-                                .read(articoliControllerProvider.notifier)
-                                .applyFilterArticoli(filterText: value);
-                          },
-                          onSubmitted: (_) async {
-                            _aggiungiArticoloIfSingle(context, ref, intervento);
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Cerca per codice o descrizione',
-                            prefixIcon: const Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                          ),
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.qr_code_scanner),
-                        onPressed: () async {
-                          String? qrCode = await scanQRCode(context);
-                          if (qrCode != null) {
-                            searchController.text = qrCode;
-                            setState(() {
-                              searchQuery = qrCode;
-                            });
-                            ref
-                                .read(articoliControllerProvider.notifier)
-                                .applyFilterArticoli(filterText: qrCode);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  ref.watch(articoliControllerProvider).when(
-                        data: (data) {
-                          if (searchQuery.isEmpty) {
-                            return const SizedBox();
-                          } else {
-                            final filteredData = data.where((articolo) {
-                              final codice =
-                                  articolo.codice.toString().toLowerCase();
-                              final descrizione =
-                                  articolo.descrizione.toString().toLowerCase();
-                              final searchWords =
-                                  searchQuery.toLowerCase().split(' ');
-                              return searchWords.every((word) =>
-                                  codice.contains(word) ||
-                                  descrizione.contains(word));
-                            }).toList();
-
-                            return Expanded(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: filteredData.length,
-                                itemBuilder: (context, index) {
-                                  var articolo = filteredData[index];
-                                  return ListTile(
-                                    title: Text(articolo.descrizione),
-                                    subtitle: Text(articolo.codice),
-                                    onTap: () {
-                                      final intervento = ref.read(
-                                          interventoApertoStateProvider);
-                                      _showAggiungiDettagliDialog(
-                                          context, articolo, intervento, ref);
-                                    },
-                                  );
-                                },
-                              ),
-                            );
-                          }
-                        },
-                        loading: () => const CircularProgressIndicator(),
-                        error: (error, stackTrace) {
-                          return Text('Error: $error');
-                        },
-                      ),
+                  Icon(Icons.construction),
+                  SizedBox(width: 2),
+                  Text('Articoli'),
                 ],
               ),
-            ),
-            actions: [
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ButtonStyle(
-                    side: MaterialStateProperty.all<BorderSide>(
-                      const BorderSide(color: Colors.grey),
+              content: SizedBox(
+                width: 400,
+                height: 400,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: searchController,
+                            autofocus: true,
+                            onChanged: (value) {
+                              setState(() {
+                                searchQuery = value;
+                              });
+                              ref
+                                  .read(articoliControllerProvider.notifier)
+                                  .applyFilterArticoli(filterText: value);
+                            },
+                            onSubmitted: (_) async {
+                              _aggiungiArticoloIfSingle(
+                                  context, ref, intervento);
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Cerca per codice o descrizione',
+                              prefixIcon: const Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide:
+                                    const BorderSide(color: Colors.orange),
+                              ),
+                            ),
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.qr_code_scanner),
+                          onPressed: () async {
+                            String? qrCode = await scanQRCode(context);
+                            if (qrCode != null) {
+                              searchController.text = qrCode;
+                              setState(() {
+                                searchQuery = qrCode;
+                              });
+                              ref
+                                  .read(articoliControllerProvider.notifier)
+                                  .applyFilterArticoli(filterText: qrCode);
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    minimumSize: MaterialStateProperty.all<Size>(
-                        const Size(double.infinity, 60)),
-                  ),
-                  child: const Text(
-                    'Chiudi',
-                    style: TextStyle(color: Colors.black),
-                  ),
+                    const SizedBox(height: 20),
+                    ref.watch(articoliControllerProvider).when(
+                          data: (data) {
+                            if (searchQuery.isEmpty) {
+                              return const SizedBox();
+                            } else {
+                              final filteredData = data.where((articolo) {
+                                final codice =
+                                    articolo.codice.toString().toLowerCase();
+                                final descrizione = articolo.descrizione
+                                    .toString()
+                                    .toLowerCase();
+                                final searchWords =
+                                    searchQuery.toLowerCase().split(' ');
+                                return searchWords.every((word) =>
+                                    codice.contains(word) ||
+                                    descrizione.contains(word));
+                              }).toList();
+
+                              return Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: filteredData.length,
+                                  itemBuilder: (context, index) {
+                                    var articolo = filteredData[index];
+                                    return ListTile(
+                                      title: Text(articolo.descrizione),
+                                      subtitle: Text(articolo.codice),
+                                      onTap: () {
+                                        final intervento = ref.read(
+                                            interventoApertoStateProvider);
+                                        _showAggiungiDettagliDialog(
+                                            context, articolo, intervento, ref);
+                                      },
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+                          },
+                          loading: () => const CircularProgressIndicator(),
+                          error: (error, stackTrace) {
+                            return Text('Error: $error');
+                          },
+                        ),
+                  ],
                 ),
               ),
+              actions: [
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      side: WidgetStateProperty.all<BorderSide>(
+                        const BorderSide(color: Colors.grey),
+                      ),
+                      minimumSize: WidgetStateProperty.all<Size>(
+                          const Size(double.infinity, 60)),
+                    ),
+                    child: const Text(
+                      'Chiudi',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    Future.delayed(Duration.zero, () {
+      FocusScope.of(context).requestFocus(FocusNode());
+      searchController.clear();
+    });
+  }
+
+  Future<String?> scanQRCode(BuildContext context) async {
+    // ignore: unused_local_variable
+    String? scannedCode;
+    Completer<String?> completer = Completer<String?>();
+
+    final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+    QRViewController? qrController;
+
+    await showDialog<String?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero, // Rimuove il padding del contenuto
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.qr_code, size: 28), // Icona QR Code
+              SizedBox(width: 8),
+              Text('Scan QR Code'), // Titolo centrato
             ],
-          );
-        },
-      );
-    },
-  );
-
-  Future.delayed(Duration.zero, () {
-    FocusScope.of(context).requestFocus(FocusNode());
-    searchController.clear();
-  });
-}
-
-
-Future<String?> scanQRCode(BuildContext context) async {
-  String? scannedCode;
-  Completer<String?> completer = Completer<String?>();
-
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? qrController;
-
-  await showDialog<String?>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        contentPadding: EdgeInsets.zero, // Rimuove il padding del contenuto
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.qr_code, size: 28), // Icona QR Code
-            SizedBox(width: 8),
-            Text('Scan QR Code'), // Titolo centrato
-          ],
-        ),
-        content: SizedBox(
-          width: 400,
-          height: 400,
-          child: QRView(
-            key: qrKey,
-            onQRViewCreated: (controller) {
-              qrController = controller;
-              qrController!.scannedDataStream.listen((scanData) {
-                if (!completer.isCompleted) {
-                  completer.complete(scanData.code);
-                  scannedCode = scanData.code;
-                  Navigator.pop(context);
-                }
-              });
-            },
           ),
-        ),
-        actions: <Widget>[
-          Container(
-            width: double.infinity, // Rende il bottone largo tutta la finestra
-            child: TextButton(
-              child: Text('Annulla'),
-              onPressed: () {
-                if (!completer.isCompleted) {
-                  completer.complete(null); // Completa con null se l'utente annulla
-                }
-                Navigator.pop(context);
+          content: SizedBox(
+            width: 400,
+            height: 400,
+            child: QRView(
+              key: qrKey,
+              onQRViewCreated: (controller) {
+                qrController = controller;
+                qrController!.scannedDataStream.listen((scanData) {
+                  if (!completer.isCompleted) {
+                    completer.complete(scanData.code);
+                    scannedCode = scanData.code;
+                    Navigator.pop(context);
+                  }
+                });
               },
             ),
           ),
-        ],
-      );
-    },
-  );
+          actions: <Widget>[
+            Container(
+              width:
+                  double.infinity, // Rende il bottone largo tutta la finestra
+              child: TextButton(
+                child: Text('Annulla'),
+                onPressed: () {
+                  if (!completer.isCompleted) {
+                    completer.complete(
+                        null); // Completa con null se l'utente annulla
+                  }
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
 
-  qrController?.dispose(); // Assicura che le risorse della fotocamera siano liberate
+    qrController
+        ?.dispose(); // Assicura che le risorse della fotocamera siano liberate
 
-  return completer.future;
-}
-
-
+    return completer.future;
+  }
 
   void _aggiungiArticoloIfSingle(
       BuildContext context, WidgetRef ref, Intervento intervento) async {
@@ -2234,7 +2324,7 @@ Future<String?> scanQRCode(BuildContext context) async {
     TimeOfDay? endTime = initialEndTime;
     int quantity = 1;
     String notes = '';
-    TextEditingController notesController = TextEditingController();
+    // TextEditingController notesController = TextEditingController();
     TextEditingController startTimeController = TextEditingController(
         text: startTime != null
             ? DateFormat.Hm()
@@ -2245,8 +2335,8 @@ Future<String?> scanQRCode(BuildContext context) async {
             ? DateFormat.Hm()
                 .format(DateTime(2022, 1, 1, endTime.hour, endTime.minute))
             : '');
-    TextEditingController quantityController =
-        TextEditingController(text: quantity.toString());
+    // TextEditingController quantityController =
+    //     TextEditingController(text: quantity.toString());
 
     showDialog(
       context: context,
@@ -2447,11 +2537,12 @@ Future<String?> scanQRCode(BuildContext context) async {
                             await ref.read(sharedPreferencesProvider.future);
                         final operatore =
                             prefs.getString('user')?.toUpperCase();
-                      var interventiDbProvider =
-                          ref.read(interventoApertoStateProvider.notifier);
-                      interventiDbProvider.updateInterventoModifica(
-                          operatoreModifica: operatore,
-                          ultimaModifica: ultimaModifica, status: 'MOD');
+                        var interventiDbProvider =
+                            ref.read(interventoApertoStateProvider.notifier);
+                        interventiDbProvider.updateInterventoModifica(
+                            operatoreModifica: operatore,
+                            ultimaModifica: ultimaModifica,
+                            status: 'MOD');
 
                         double durationDouble = parseDuration(duration);
 
@@ -2717,7 +2808,8 @@ Future<String?> scanQRCode(BuildContext context) async {
                           ref.read(interventoApertoStateProvider.notifier);
                       interventiDbProvider.updateInterventoModifica(
                           operatoreModifica: operatore,
-                          ultimaModifica: ultimaModifica, status: 'MOD');
+                          ultimaModifica: ultimaModifica,
+                          status: 'MOD');
 
                       double quantityDouble = double.parse(quantity.toString());
                       Map<String, dynamic> params = {
@@ -2790,7 +2882,8 @@ Future<String?> scanQRCode(BuildContext context) async {
     );
 
     final message = Message()
-      ..from = const prefix.Address('tecnico@salvadorsrl.it', 'Tecnico Salvador')
+      ..from =
+          const prefix.Address('tecnico@salvadorsrl.it', 'Tecnico Salvador')
       ..recipients.add('tecnico@salvadorsrl.it')
       ..ccRecipients.add('assistenza@icoldo.it')
       ..subject =
@@ -2853,6 +2946,7 @@ Future<String?> scanQRCode(BuildContext context) async {
     double disp = 0;
     double giac = 0;
     double scorta = 0;
+    // ignore: unused_local_variable
     String? unimis;
 
     final qtaResiduaResponse =
@@ -3070,7 +3164,7 @@ Future<String?> scanQRCode(BuildContext context) async {
 
   void modifyDurataDialog(BuildContext context, Riga riga,
       double? nuovaQuantita, WidgetRef ref) async {
-    double quantity = riga.qta ?? 1;
+    // double quantity = riga.qta ?? 1;
     String notes = riga.note ?? '';
 
     DateTime initialDateTime =
@@ -3083,11 +3177,10 @@ Future<String?> scanQRCode(BuildContext context) async {
     TimeOfDay initialEndTimeOfDay =
         TimeOfDay(hour: endDateTime.hour, minute: endDateTime.minute);
 
-    // Use last saved times if available, otherwise use initial times
     TimeOfDay? savedStartTime = lastStartTime ?? initialStartTimeOfDay;
     TimeOfDay? savedEndTime = lastEndTime ?? initialEndTimeOfDay;
 
-    TextEditingController notesController = TextEditingController(text: notes);
+    // TextEditingController notesController = TextEditingController(text: notes);
     TextEditingController startTimeController = TextEditingController(
         text: savedStartTime != null
             ? DateFormat.Hm().format(DateTime(
@@ -3437,7 +3530,7 @@ Future<String?> scanQRCode(BuildContext context) async {
 
   void _showModifyNotaDialog(
       BuildContext context, WidgetRef ref, Riga riga, String? nuovaNota) async {
-    String notaText = '';
+    // String notaText = '';
     final TextEditingController controller =
         TextEditingController(text: riga.note);
 
@@ -3480,10 +3573,10 @@ Future<String?> scanQRCode(BuildContext context) async {
                       Navigator.pop(context);
                     },
                     style: ButtonStyle(
-                      side: MaterialStateProperty.all<BorderSide>(
+                      side: WidgetStateProperty.all<BorderSide>(
                         const BorderSide(color: Colors.grey),
                       ),
-                      minimumSize: MaterialStateProperty.all<Size>(
+                      minimumSize: WidgetStateProperty.all<Size>(
                           const Size(double.infinity, 40)),
                     ),
                     child: const Text('Annulla',
@@ -3508,7 +3601,8 @@ Future<String?> scanQRCode(BuildContext context) async {
                           ref.read(interventoApertoStateProvider.notifier);
                       interventiDbProvider.updateInterventoModifica(
                           operatoreModifica: operatore,
-                          ultimaModifica: ultimaModifica, status: 'MOD');
+                          ultimaModifica: ultimaModifica,
+                          status: 'MOD');
                       nuovaNota = controller.text;
 
                       riga.note = nuovaNota;
@@ -3523,10 +3617,10 @@ Future<String?> scanQRCode(BuildContext context) async {
                       updateNota(riga, nuovaNota, ref);
                     },
                     style: ButtonStyle(
-                      side: MaterialStateProperty.all<BorderSide>(
+                      side: WidgetStateProperty.all<BorderSide>(
                         const BorderSide(color: Colors.grey),
                       ),
-                      minimumSize: MaterialStateProperty.all<Size>(
+                      minimumSize: WidgetStateProperty.all<Size>(
                           const Size(double.infinity, 40)),
                     ),
                     child: const Text('Salva',
@@ -3569,7 +3663,7 @@ class PdfPreviewPage extends StatelessWidget {
 class ImageViewScreen extends StatelessWidget {
   final String filePath;
 
-  ImageViewScreen({required this.filePath});
+  const ImageViewScreen({required this.filePath});
 
   @override
   Widget build(BuildContext context) {
@@ -3577,7 +3671,7 @@ class ImageViewScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Visualizza File'),
+        title: const Text('Visualizza File'),
       ),
       body: Center(
         child: fileExtension == 'pdf'
@@ -3589,7 +3683,6 @@ class ImageViewScreen extends StatelessWidget {
     );
   }
 }
-
 
 class RotatingHourglass extends StatefulWidget {
   const RotatingHourglass({super.key});

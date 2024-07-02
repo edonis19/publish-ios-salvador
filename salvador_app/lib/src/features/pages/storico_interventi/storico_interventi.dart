@@ -104,7 +104,7 @@ class StoricoInterventiPage extends ConsumerWidget {
                         const SizedBox(height: 8),
                         ...righe.map<Widget>((riga) {
                           var descrizioneIntervento = riga['descrizione'] ?? '';
-                          var descrizioniArticoli = riga['articolo'] != null ? riga['articolo']['note'] ?? '' : '';
+                          // var descrizioniArticoli = riga['articolo'] != null ? riga['articolo']['note'] ?? '' : '';
                           var operatoriRighe = riga['operatore'] ?? '';
                           double qtaArticoli = riga['qta'] ?? 0.0;
 

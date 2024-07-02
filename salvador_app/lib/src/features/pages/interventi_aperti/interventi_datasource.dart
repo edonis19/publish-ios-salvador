@@ -27,7 +27,7 @@ class InterventiApertiDataSource extends DataGridSource {
     rows.addAll(data.map((intervento) {
       InterventoCliente? cliente = intervento.cliente;
 
-      String? note = intervento.note ?? '';
+      // String? note = intervento.note ?? '';
       String? dataDocFormatted =
           DateFormat('dd/MM/yyyy').format(intervento.dataDoc);
 
@@ -106,6 +106,7 @@ DataGridRowAdapter buildRow(DataGridRow row) {
       if (dataGridCell.columnName == 'button') {
         return IconButton(
           onPressed: () {
+            // ignore: unnecessary_null_comparison
             if (intervento != null) {
               ref
                   .read(interventoApertoStateProvider.notifier)

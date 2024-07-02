@@ -8503,7 +8503,7 @@ extension ClienteQueryProperty3<R1, R2>
 
 _$ClienteImpl _$$ClienteImplFromJson(Map<String, dynamic> json) =>
     _$ClienteImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       codice: json['codice'] as String,
       descrizione: json['descrizione'] as String,
       partitaIva: json['partitaIva'] as String?,

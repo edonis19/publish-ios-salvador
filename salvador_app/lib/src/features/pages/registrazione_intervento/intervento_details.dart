@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:salvador_task_management/src/config/providers.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/intervento_aperto_state.dart';
 import 'package:salvador_task_management/src/models/intervento_model.dart';
 
@@ -127,8 +126,8 @@ Widget _buildWarningMessage(BuildContext context) {
     String? dataDocFormatted;
     dataDocFormatted = DateFormat('dd/MM/yyyy').format(intervento.dataDoc);
 
-    var prefs = ref.read(sharedPreferencesProvider.future);
-    var operatore = prefs.toString();
+    // var prefs = ref.read(sharedPreferencesProvider.future);
+    // var operatore = prefs.toString();
 
     switch (subItem) {
       case 'Cliente':

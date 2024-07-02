@@ -2,22 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reactive_dropdown_search/reactive_dropdown_search.dart';
-import 'package:salvador_task_management/src/config/providers.dart';
 import 'package:salvador_task_management/src/features/main_view/main_view.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/generale_details.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/intervento_aperto_state.dart';
-import 'package:salvador_task_management/src/features/pages/nuovo_intervento/clienti_controller.dart';
-import 'package:salvador_task_management/src/features/pages/nuovo_intervento/elencomatricole_controller.dart';
-import 'package:salvador_task_management/src/models/elencomatricole_model.dart';
 import 'package:salvador_task_management/src/models/intervento_model.dart';
-import 'package:salvador_task_management/src/repository/elencomatricole_repository.dart';
-import 'package:salvador_task_management/src/repository/interventi_db_repository.dart';
 
 class NuovoInterventoSecondPage extends ConsumerWidget {
   NuovoInterventoSecondPage({super.key});
-  final _targaController = TextEditingController();
-  final _telaioController = TextEditingController();
   final _notaController = TextEditingController();
   final _contMatricolaController = TextEditingController();
 

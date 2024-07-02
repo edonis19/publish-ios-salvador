@@ -823,7 +823,7 @@ extension UltimaModificaInterventoQueryProperty3<R1, R2>
 _$UltimaModificaInterventoImpl _$$UltimaModificaInterventoImplFromJson(
         Map<String, dynamic> json) =>
     _$UltimaModificaInterventoImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       autore: json['autore'] as String?,
       ultimaModifica: json['ultimaModifica'] == null
           ? null

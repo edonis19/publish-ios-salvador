@@ -4689,10 +4689,10 @@ extension AllegatiElencoMatricoleQueryObject on QueryBuilder<
 _$AllegatiElencoMatricoleImpl _$$AllegatiElencoMatricoleImplFromJson(
         Map<String, dynamic> json) =>
     _$AllegatiElencoMatricoleImpl(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       nome: json['nome'] as String?,
       descrizione: json['descrizione'] as String?,
-      fileSize: json['fileSize'] as int?,
+      fileSize: (json['fileSize'] as num?)?.toInt(),
       created: json['created'] == null
           ? null
           : DateTime.parse(json['created'] as String),

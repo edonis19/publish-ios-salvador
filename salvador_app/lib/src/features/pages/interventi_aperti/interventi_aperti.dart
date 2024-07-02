@@ -8,9 +8,12 @@ import 'package:salvador_task_management/src/features/pages/interventi_aperti/ge
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/interventi_datasource.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/intervento_aperto_state.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/list_interventi_aperti_datasource_columns.dart';
+import 'package:salvador_task_management/src/models/filtro_model.dart';
 import 'package:salvador_task_management/src/models/intervento_model.dart';
+import 'package:salvador_task_management/src/repository/filtro_db_repository.dart';
 import 'package:salvador_task_management/src/repository/interventi_api_repository.dart';
 import 'package:salvador_task_management/src/repository/interventi_db_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class InterventiApertiPage extends ConsumerWidget {
@@ -25,6 +28,11 @@ class InterventiApertiPage extends ConsumerWidget {
   String lastRifMatricolaCliente = '';
   String lastTelaio = '';
   bool filtroApplicato = false;
+
+  TextEditingController nDocController = TextEditingController();
+  TextEditingController clienteController = TextEditingController(); 
+  TextEditingController rifMatricolaClienteController = TextEditingController(); 
+  TextEditingController telaioController  = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,6 +77,8 @@ class InterventiApertiPage extends ConsumerWidget {
                   const SizedBox(width: 20),
                   ElevatedButton.icon(
                     onPressed: () {
+                      loadFilters();
+                      loadSavedFilters(nDocController, clienteController, rifMatricolaClienteController, telaioController);
                       _showFilterMenu(context, ref);
                     },
                     style: ButtonStyle(
@@ -139,7 +149,7 @@ class InterventiApertiPage extends ConsumerWidget {
                                         intervento.numDoc == 'null')
                                     ? Colors.yellow
                                     : intervento.status == 'MOD'
-                                        ? Color.fromARGB(255, 238, 123, 115)
+                                        ? const Color.fromARGB(255, 238, 123, 115)
                                         : Colors.transparent,
                                 child: ListTile(
                                   title: Text(
@@ -370,9 +380,9 @@ class InterventiApertiPage extends ConsumerWidget {
             children: [
               TextField(
                 onChanged: (String value) {
-                  lastNdoc = value;
+                  nDocController.text = value.toUpperCase();
                 },
-                controller: TextEditingController(text: lastNdoc),
+                controller: nDocController,
                 style: const TextStyle(fontSize: 16.0),
                 decoration: InputDecoration(
                   labelText: 'N° Doc',
@@ -395,9 +405,9 @@ class InterventiApertiPage extends ConsumerWidget {
               const SizedBox(height: 8),
               TextField(
                 onChanged: (String value) {
-                  lastCliente = value.toUpperCase();
+                  clienteController.text = value.toUpperCase();
                 },
-                controller: TextEditingController(text: lastCliente),
+                controller: clienteController,
                 decoration: InputDecoration(
                   labelText: 'Cliente',
                   labelStyle: const TextStyle(fontSize: 16.0),
@@ -419,10 +429,10 @@ class InterventiApertiPage extends ConsumerWidget {
               const SizedBox(height: 8),
               TextField(
                 onChanged: (String value) {
-                  lastRifMatricolaCliente = value.toUpperCase();
+                  rifMatricolaClienteController.text = value.toUpperCase();
                 },
                 controller:
-                    TextEditingController(text: lastRifMatricolaCliente),
+                    rifMatricolaClienteController,
                 decoration: InputDecoration(
                   labelText: 'Targa/N°',
                   labelStyle: const TextStyle(fontSize: 16.0),
@@ -444,9 +454,9 @@ class InterventiApertiPage extends ConsumerWidget {
               const SizedBox(height: 8),
               TextField(
                 onChanged: (String value) {
-                  lastTelaio = value;
+                  telaioController.text = value.toUpperCase();
                 },
-                controller: TextEditingController(text: lastTelaio),
+                controller: telaioController,
                 decoration: InputDecoration(
                   labelText: 'Telaio',
                   labelStyle: const TextStyle(fontSize: 16.0),
@@ -572,9 +582,64 @@ class InterventiApertiPage extends ConsumerWidget {
               const SizedBox(height: 18),
               Row(
                 children: [
+                                  Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // Reset all fields and apply default filters
+                      fromDateController.clear();
+                      toDateController.clear();
+                      nDocController.clear();
+                      clienteController.clear();
+                      rifMatricolaClienteController.clear();
+                      telaioController.clear();
+
+                      lastFromDate = '';
+                      lastToDate = '';
+                      lastNdoc = '';
+                      lastCliente = '';
+                      lastRifMatricolaCliente = '';
+                      lastTelaio = '';
+
+                      applyFilter(
+                        fromDate: '',
+                        toDate: '',
+                        nDoc: '',
+                        cliente: '',
+                        rifMatricolaCliente: '',
+                        telaio: '',
+                        ref: ref,
+                      );
+
+                                              // Clear saved filters
+                        await deleteSavedFilters();
+
+
+
+                      filtroApplicato = false;
+
+                      Navigator.of(context).pop();
+                    },
+                    style: ButtonStyle(
+                      side: WidgetStateProperty.all<BorderSide>(
+                        const BorderSide(color: Colors.grey),
+                      ),
+                      minimumSize: WidgetStateProperty.all<Size>(
+                        const Size(double.infinity, 40),
+                      ),
+                      backgroundColor: WidgetStateProperty.all<Color>(
+                        Colors.red, // Change button color as needed
+                      ),
+                    ),
+                    child: const Text(
+                      'Elimina filtro',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (lastFromDate.isNotEmpty && lastToDate.isEmpty) {
                           DateTime currentDate = DateTime.now();
                           String formattedDate =
@@ -582,6 +647,17 @@ class InterventiApertiPage extends ConsumerWidget {
                           toDateController.text = formattedDate;
                           lastToDate = formattedDate;
                         }
+
+                                      // Save filters to database
+              await saveFilters(FilterModel(
+                fromDate: fromDateController.text,
+                toDate: toDateController.text,
+                inputText: nDocController.text,
+                cliente: clienteController.text,
+                rifMatricolaCliente: rifMatricolaClienteController.text,
+                telaio: telaioController.text, 
+                id: 0,
+              ));
                         // .applyFilter(
                         //   fromDate: lastFromDate,
                         //   toDate: lastToDate,
@@ -591,12 +667,12 @@ class InterventiApertiPage extends ConsumerWidget {
                         //   telaio: lastTelaio,
                         // );
                         applyFilter(
-                          fromDate: lastFromDate,
-                          toDate: lastToDate,
-                          nDoc: lastNdoc,
-                          cliente: lastCliente,
-                          rifMatricolaCliente: lastRifMatricolaCliente,
-                          telaio: lastTelaio,
+                          fromDate: fromDateController.text,
+                toDate: toDateController.text,
+                nDoc: nDocController.text,
+                cliente: clienteController.text,
+                rifMatricolaCliente: rifMatricolaClienteController.text,
+                telaio: telaioController.text,
                           ref: ref,
                         );
 
@@ -689,6 +765,76 @@ class InterventiApertiPage extends ConsumerWidget {
     //   },
     // )
   }
+}
+
+
+Future<void> _resetFilterInDatabase(WidgetRef ref) async {
+  final filterIdToDelete = 0; // Replace with the actual ID of the filter to delete
+  final filterDbOpRepository = ref.read(filterDbOpRepositoryProvider.notifier);
+  await filterDbOpRepository.deleteFilterById(filterIdToDelete);
+}
+
+
+// Function to save filters to SharedPreferences
+Future<void> saveFilters(FilterModel? filters) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  if (filters == null) {
+    await prefs.clear(); // Clear all saved filters if filters are null
+    return;
+  }
+
+  await prefs.setString('fromDate', filters.fromDate ?? '');
+  await prefs.setString('toDate', filters.toDate ?? '');
+  await prefs.setString('nDoc', filters.inputText ?? '');
+  await prefs.setString('cliente', filters.cliente ?? '');
+  await prefs.setString('rifMatricolaCliente', filters.rifMatricolaCliente ?? '');
+  await prefs.setString('telaio', filters.telaio ?? '');
+  await prefs.setInt('id', filters.id); // Save id as an integer
+  // Add other fields here if needed
+}
+
+// Funzione per caricare i filtri dal database (SharedPreferences)
+Future<FilterModel> loadFilters() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+  // Retrieve all fields from SharedPreferences
+  String fromDate = prefs.getString('fromDate') ?? '';
+  String toDate = prefs.getString('toDate') ?? '';
+  String inputText = prefs.getString('nDoc') ?? '';
+  String cliente = prefs.getString('cliente') ?? '';
+  String rifMatricolaCliente = prefs.getString('rifMatricolaCliente') ?? '';
+  String telaio = prefs.getString('telaio') ?? '';
+  int id = prefs.getInt('id') ?? 0; // Retrieve id as an integer
+  
+  // Create and return a FilterModel object
+  return FilterModel(
+    fromDate: fromDate,
+    toDate: toDate,
+    inputText: inputText,
+    cliente: cliente,
+    rifMatricolaCliente: rifMatricolaCliente,
+    telaio: telaio,
+    id: id,
+  );
+}
+
+// Funzione per caricare i filtri salvati nei controller dei TextField
+void loadSavedFilters(TextEditingController nDocController, TextEditingController clienteController, TextEditingController rifMatricolaClienteController, TextEditingController telaioController) async {
+  FilterModel filters = await loadFilters();
+
+  // // Assign values to respective TextField controllers
+  // fromDateController.text = filters.fromDate ?? '';
+  // toDateController.text = filters.toDate ?? '';
+  nDocController.text = filters.inputText ?? '';
+  clienteController.text = filters.cliente ?? '';
+  rifMatricolaClienteController.text = filters.rifMatricolaCliente ?? '';
+  telaioController.text = filters.telaio ?? '';
+}
+
+// Function to delete saved filters from SharedPreferences
+Future<void> deleteSavedFilters() async {
+  await saveFilters(null); // Pass null to clear all saved filters
 }
 
 void _deleteIntervento(Intervento intervento, WidgetRef ref) {

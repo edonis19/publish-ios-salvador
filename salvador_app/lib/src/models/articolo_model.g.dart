@@ -8694,7 +8694,7 @@ extension PropertyObjQueryObject
 
 _$ArticoloImpl _$$ArticoloImplFromJson(Map<String, dynamic> json) =>
     _$ArticoloImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       codice: json['codice'] as String,
       tipoParte: json['tipoParte'] as String,
       descrizione: json['descrizione'] as String,
@@ -8737,7 +8737,7 @@ _$ArticoloImpl _$$ArticoloImplFromJson(Map<String, dynamic> json) =>
       modelloInt: json['modelloInt'] as String?,
       fornAb: json['fornAb'] as String?,
       mts: json['mts'] as bool,
-      mtsGgApp: json['mtsGgApp'] as int,
+      mtsGgApp: (json['mtsGgApp'] as num).toInt(),
       mtsLtMin: (json['mtsLtMin'] as num).toDouble(),
       mtsLtTax: json['mtsLtTax'] as bool,
       mtsLtMul: json['mtsLtMul'] as bool,
@@ -8802,7 +8802,7 @@ Map<String, dynamic> _$$ArticoloImplToJson(_$ArticoloImpl instance) =>
 
 _$PropertyObjImpl _$$PropertyObjImplFromJson(Map<String, dynamic> json) =>
     _$PropertyObjImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       codice: json['codice'] as String?,
       descrizione: json['descrizione'] as String?,
       extraAtt: json['extraAtt'] as List<dynamic>,

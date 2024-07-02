@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:salvador_task_management/src/config/providers.dart';
 import 'package:salvador_task_management/src/features/pages/registrazione_intervento/registrazione_intervento.dart';
 import 'package:salvador_task_management/src/features/pages/storico_interventi/storico_interventi.dart';
 

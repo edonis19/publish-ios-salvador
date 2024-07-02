@@ -78,7 +78,7 @@ rowsIntervento.add(DataGridRow(cells: [
   const DataGridCell<String>(columnName: 'magazzino', value: null),
 ]));
     } else {
-      final int? idRiga = riga.idRiga;
+      // final int? idRiga = riga.idRiga;
       String righeOperatore = riga.operatore ?? '';
       final int? numRiga = riga.riga;
       String formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
@@ -232,7 +232,7 @@ void onDeleteRow(BuildContext context, int riga, int rigaNum) {
                         ref.read(interventoApertoStateProvider.notifier);
                         interventiDbProvider.updateInterventoModifica(operatoreModifica: operatore, ultimaModifica: ultimaModifica);
                         
-                      bool isLastRow = riga == intervento.righe.last.riga;
+                      // bool isLastRow = riga == intervento.righe.last.riga;
                       _updateQuantity(riga, movimentoMagazzino);
 
     removeRiga(ref, riga);
@@ -286,10 +286,9 @@ void onDeleteRow(BuildContext context, int riga, int rigaNum) {
     }
   }
 
-  String _getOperatorName(SharedPreferences prefs) {
-    //final userName =
-    //    ref.read(sharedPreferencesProvider).asData!.value.getString("user");
-    final userName = prefs.getString("user");
-    return operatorNames[userName] ?? '';
+String _getOperatorName(BuildContext context, WidgetRef ref) {
+    final prefs = ref.read(sharedPreferencesProvider).asData?.value;
+    final operatorName = prefs?.getString("operatorName");
+    return operatorName ?? 'Unknown';
   }
 }

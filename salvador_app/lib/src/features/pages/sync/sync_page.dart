@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/generale_details.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/intervento_aperto_state.dart';
 import 'package:salvador_task_management/src/models/intervento_model.dart';
-import 'package:salvador_task_management/src/repository/add_righe_repository.dart';
 import 'package:salvador_task_management/src/repository/interventi_db_repository.dart';
 
 class SyncPage extends ConsumerWidget {
@@ -41,7 +40,7 @@ class SyncPage extends ConsumerWidget {
     itemCount: interventi.length,
     itemBuilder: (context, index) {
       final intervento = interventi[index];
-      final formattedDate = DateFormat('yyyy-MM-dd').format(intervento.dataDoc);
+      // final formattedDate = DateFormat('yyyy-MM-dd').format(intervento.dataDoc);
       return Column(
         children: [
             Container(

@@ -6,7 +6,6 @@ import 'package:reactive_dropdown_search/reactive_dropdown_search.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:salvador_task_management/src/config/providers.dart';
 import 'package:salvador_task_management/src/features/main_view/main_view.dart';
-import 'package:salvador_task_management/src/features/pages/interventi_aperti/generale_details.dart';
 import 'package:salvador_task_management/src/features/pages/interventi_aperti/intervento_aperto_state.dart';
 import 'package:salvador_task_management/src/features/pages/nuovo_intervento/clienti_controller.dart';
 import 'package:salvador_task_management/src/features/pages/nuovo_intervento/elencomatricole_controller.dart';
@@ -97,7 +96,7 @@ final codCliValue = form.control('desCli').value;
 // Verifica se è stato selezionato un cliente
 if (codCliValue == null || codCliValue.isEmpty) {
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
+    const SnackBar(
       content: Text('Selezionare una targa per continuare'),
       backgroundColor: Colors.red,
     ),
@@ -240,6 +239,7 @@ final clientiFiltrati = clientiData
                           clientiFiltrati
                               .map((cliente) => cliente.datiContabili ?? '')
                               .toList();
+                      // ignore: unused_local_variable
                       String codiciClientiString = codiciClienti.join(',');
                       String partitaIvaClientiString =
                           partitaIvaClientiFiltrati.join(',');
